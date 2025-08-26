@@ -32,7 +32,8 @@ vi cidrs.json
 The cidrs.json file should contain IP lists array to start:
 ```shell
 [
-  "172.20.201.0/24",
+  "10.0.0.0/24",
+  "172.20.0.0/24",
   "192.168.201.0/24"
 ]
 ```
