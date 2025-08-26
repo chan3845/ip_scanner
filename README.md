@@ -1,4 +1,4 @@
-IP Scanner
+### IP Scanner
 IP Scanner is a simple, web-based tool for scanning and managing network IP addresses. It's designed to provide a quick and easy way to see which hosts are active on your network.
 
 #### Key Features
