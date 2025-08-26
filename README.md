@@ -8,6 +8,9 @@ IP Scanner is a simple, web-based tool for scanning and managing network IP addr
 
 - **Live Scanning:** Click on a network to initiate a scan and view the list of "alive" IP addresses.
 
+- **Concurrent/Parallel Scanning:** The tool uses parallel processing to scan multiple hosts at once, ensuring fast and efficient results.
+
+
 #### Deploying IP Scanner with Docker
 The easiest way to run this application is by using Docker. Follow the steps below to get your IP Scanner instance up and running.
 
@@ -58,3 +61,14 @@ Once the container is running, you can access the IP Scanner application by navi
 If you are running Docker on your local machine, visit: http://localhost:5000
 
 <img width="1868" height="998" alt="image" src="https://github.com/user-attachments/assets/e38b96c9-b627-420c-9780-eb9aebf2c63b" />
+
+
+#### ⚠️ Limitations
+It's important to note that the scan results may not be 100% accurate due to certain network conditions. The tool relies on ICMP (ping) to determine if a host is "alive." Therefore, a server may be online but not appear in the results if:
+
+- The target server is powered off.
+
+- The target server has ICMP disabled (i.e., it doesn't respond to pings).
+
+This tool is most suitable for personal use or small-scale network monitoring where a quick check is needed, rather than for mission-critical, high-accuracy network audits.
+
