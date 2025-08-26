@@ -1,11 +1,58 @@
-IP ScannerIP Scanner is a simple, web-based tool for scanning and managing network IP addresses. It's designed to provide a quick and easy way to see which hosts are active on your network.🚀 Key FeaturesWeb-based Interface: Access and manage your scans from any web browser.CIDR Management: Easily add, edit, or remove CIDR networks for scanning.Live Scanning: Click on a network to initiate a scan and view the list of "alive" IP addresses.🐳 Getting Started with DockerThe easiest way to run this application is by using Docker. Follow the steps below to get your IP Scanner instance up and running.1. Pull the Docker ImageFirst, you'll need to pull the Docker image from the public registry.docker pull chan3845/ip-scanner:v1.0.0
-2. Configure Persistent StorageFor your CIDR networks to be saved permanently, you need to use a persistent volume. This involves creating a cidrs.json file on your local machine and mounting it into the container.Create an empty cidrs.json file in a location of your choice. For example, you can create it in your home directory within a new folder:mkdir -p $HOME/ip_scanner
+IP Scanner
+IP Scanner is a simple, web-based tool for scanning and managing network IP addresses. It's designed to provide a quick and easy way to see which hosts are active on your network.
+
+#### Key Features
+- **Web-based Interface:** Access and manage your scans from any web browser.
+
+- **CIDR Management:** Easily add, edit, or remove CIDR networks for scanning.
+
+- **Live Scanning:** Click on a network to initiate a scan and view the list of "alive" IP addresses.
+
+#### Deploying IP Scanner with Docker
+The easiest way to run this application is by using Docker. Follow the steps below to get your IP Scanner instance up and running.
+
+**1. Pull the Docker Image**
+First, you'll need to pull the Docker image from the public registry.
+
+```shell
+docker pull chan3845/ip-scanner:v1.0.0
+```
+
+**2. Configure Persistent Storage**
+For your CIDR networks to be saved permanently, you need to use a persistent volume. This involves creating a cidrs.json file on your local machine and mounting it into the container.
+
+Create an empty cidrs.json file in a location of your choice. For example, you can create it in your home directory within a new folder:
+
+```shell
+mkdir -p $HOME/ip_scanner
 cd $HOME/ip_scanner
-touch cidrs.json
-The cidrs.json file should contain an empty JSON array to start:[
+vi cidrs.json
+```
+
+The cidrs.json file should contain IP lists array to start:
+```shell
+[
   "172.20.201.0/24",
   "192.168.201.0/24"
 ]
-Or you can use the following to start with an empty list.[]
-3. Run the ContainerNow you can run the container using the docker run command. This command will:Run the container in detached mode (-d).Map port 5001 on your local machine to port 5000 in the container (-p 5001:5000).Mount your local cidrs.json file to the container for data persistence (-v $HOME/ip_scanner/cidrs.json:/app/cidrs.json).Mount the local timezone file for accurate scan times (-v /etc/localtime:/etc/localtime:ro).Full Command Example:docker run -d -p 5001:5000 -v $HOME/ip_scanner/cidrs.json:/app/cidrs.json -v /etc/localtime:/etc/localtime:ro chan3845/ip-scanner:v1.0.0
-4. Access the ApplicationOnce the container is running, you can access the IP Scanner application by navigating to your browser.If you are running Docker on your local machine, visit: http://localhost:5001If you are running Docker on a remote server, visit: http://[remote_server_ip]:5001
+```
+
+Or you can use the following to start with an empty list.
+```shell
+[]
+```
+
+
+**3. Run the Container**
+Now you can run the container the docker run command. 
+
+```shell
+docker run -d -p 5000:5000 -v $HOME/ip_scanner/cidrs.json:/app/cidrs.json -v /etc/localtime:/etc/localtime:ro chan3845/ip-scanner:v1.0.0
+```
+
+
+**4. Access the Application**
+Once the container is running, you can access the IP Scanner application by navigating to your browser.
+
+If you are running Docker on your local machine, visit: http://localhost:5000
+
