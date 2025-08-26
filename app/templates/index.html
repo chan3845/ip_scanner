@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<button class="dark-mode-toggle" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode">🌙 Dark Mode</button>
+<h1>Network Scanner</h1>
+<a href="{{ url_for('manage') }}" class="manage-btn" aria-label="Manage Networks">Manage Networks</a>
+<div class="cidr-buttons">
+    {% for cidr in cidrs %}
+    <button class="cidr-btn" onclick="scanNetwork('{{ cidr }}')">{{ cidr }}</button>
+    {% endfor %}
+</div>
+<div id="result"></div>
+<button class="contact-float-btn" onclick="toggleEmailPopup()" aria-label="Contact Email">Contact</button>
+
+<div id="emailPopup" class="email-popup" role="dialog" aria-modal="true" aria-labelledby="emailLabel">
+    <span id="emailLabel">Email:</span> <span id="emailAddress">channyeinoo56@gmail.com</span>
+    <button class="copy-btn" onclick="copyEmail()" aria-label="Copy Email">Copy</button>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function scanNetwork(cidr) {
+    const resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = "<b>Scanning " + cidr + " ...</b>";
+    fetch("/scan/" + encodeURIComponent(cidr))
+        .then(response => response.json())
+        .then(data => {
+            let html = `<h3>Alive IPs in ${data.subnet} (${data.count})</h3>`;
+            html += `<p>Scan initiated at: ${data.scan_time}</p>`;
+            if (data.ips.length > 0) {
+                html += "<table><thead><tr><th>IP Address</th></tr></thead><tbody>";
+                data.ips.forEach(ip => {
+                    html += "<tr><td>" + ip + "</td></tr>";
+                });
+                html += "</tbody></table>";
+            } else {
+                html += "<p>No alive IPs found.</p>";
+            }
+            resultDiv.innerHTML = html;
+        })
+        .catch(() => {
+            resultDiv.innerHTML = "<p style='color:#e74c3c;'>Error scanning the network.</p>";
+        });
+}
+</script>
+{% endblock %}

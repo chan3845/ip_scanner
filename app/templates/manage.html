@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<button class="dark-mode-toggle" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode">🌙 Dark Mode</button>
+<h1>Manage Networks</h1>
+<a href="{{ url_for('index') }}" class="back-btn" aria-label="Back to Scanner">⬅ Back to Scanner</a>
+<form method="POST" class="add-form">
+    <input type="text" name="cidr" placeholder="e.g. 172.20.215.0/24" required autocomplete="off" />
+    <button type="submit" name="action" value="add" class="add-btn">Add CIDR</button>
+</form>
+<table>
+    <thead>
+        <tr><th>CIDR</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+    {% for cidr in cidrs %}
+        <tr>
+            <td>{{ cidr }}</td>
+            <td>
+                <form method="POST" style="display:inline;">
+                    <input type="hidden" name="cidr" value="{{ cidr }}">
+                    <button type="submit" name="action" value="delete" class="delete-btn">Delete</button>
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<button class="contact-float-btn" onclick="toggleEmailPopup()" aria-label="Contact Email">Contact</button>
+
+<div id="emailPopup" class="email-popup" role="dialog" aria-modal="true" aria-labelledby="emailLabel">
+    <span id="emailLabel">Email:</span> <span id="emailAddress">channyeinoo56@gmail.com</span>
+    <button class="copy-btn" onclick="copyEmail()" aria-label="Copy Email">Copy</button>
+</div>
+{% endblock %}
