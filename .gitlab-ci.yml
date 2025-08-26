@@ -11,11 +11,11 @@ stages:
 
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
-  DOCKER_IMAGE_NAME: "reg.busyape.lab/busyape/ip_scanner:$CI_COMMIT_SHORT_SHA"
-  REMOTE_HOST: "172.20.204.66"
+  DOCKER_IMAGE_NAME: "your-registry.example.com/your-namespace/ip_scanner:$CI_COMMIT_SHORT_SHA"
+  REMOTE_HOST: "your.remote.docker.host"
   DEPLOY_DIR: "$HOME/ip_scanner"
-  HARBOR_USER: "chan3845"
-  HARBOR_PASSWORD: "P@ssw0rd2025"
+  HARBOR_USER: "registry-user" # you can also set in the GitLab CI/CD > Variables
+  HARBOR_PASSWORD: "registry-password" # you can also set in the GitLab CI/CD > Variables
 
 cache:
   paths:
@@ -66,7 +66,8 @@ test_app:
 # -------------------------------------
 build_image:
   stage: build
-  image: reg.busyape.lab/busyape/dind-busyape:int
+ #  Using custom Docker-in-Docker image that includes root CA cert for private registry trust
+  image: your-registry.example.com/your-namespace/custom-dind-with-ca:latest
   services:
     -  name: docker:dind
        alias: docker
@@ -74,7 +75,7 @@ build_image:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_TLS_CERTDIR: ""
   script:
-    - docker login reg.busyape.lab -u "$HARBOR_USER" -p "$HARBOR_PASSWORD"
+    - docker login your-registry.example.com -u "$HARBOR_USER" -p "$HARBOR_PASSWORD"
     - docker build -t $DOCKER_IMAGE_NAME ./app
     - docker push $DOCKER_IMAGE_NAME
   only:
@@ -162,8 +163,7 @@ post_deploy:
 cleanup:
   stage: cleanup
   script:
-    - echo "Cleanup Done!"
-    #    - docker image prune -af
+    - docker image prune -af
   when: always
   tags:
     - r1-shell-executor
