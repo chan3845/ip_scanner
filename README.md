@@ -56,3 +56,4 @@ Once the container is running, you can access the IP Scanner application by navi
 
 If you are running Docker on your local machine, visit: http://localhost:5000
 
+<img width="1868" height="998" alt="image" src="https://github.com/user-attachments/assets/e38b96c9-b627-420c-9780-eb9aebf2c63b" />
